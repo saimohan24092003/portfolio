@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saimohan R | AI & Full-Stack Developer</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <!-- Custom Configuration for Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-dark': '#070707', // Slightly darker primary for contrast
+                        'accent-blue': '#3b82f6',
+                        'accent-pink': '#ec4899',
+                        'text-light': '#F3F4F6',
+                        'secondary-dark': '#111827',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'blink': 'blink 1s step-end infinite',
+                        'slide-in-right': 'slideInRight 0.8s ease-out forwards',
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                        'pulse-glow': 'pulseGlow 2s infinite',
+                        'spin-slow': 'spin 2s linear infinite',
+                    },
+                    keyframes: {
+                        blink: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0' },
+                        },
+                        slideInRight: {
+                            '0%': { transform: 'translateX(50px)', opacity: '0' },
+                            '100%': { transform: 'translateX(0)', opacity: '1' },
+                        },
+                        fadeInUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { transform: 'scale(1)', boxShadow: '0 0 5px rgba(59, 130, 246, 0.5)' },
+                            '50%': { transform: 'scale(1.03)', boxShadow: '0 0 15px rgba(236, 72, 153, 0.8)' },
+                        },
+                        spin: {
+                            from: { transform: 'rotate(0deg)' },
+                            to: { transform: 'rotate(360deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom styles for the dark theme and smooth scrolling */
+        body {
+            background-color: #070707; /* Primary Dark */
+            color: #F3F4F6; /* Text Light */
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden; /* Prevent horizontal scroll from animations */
+            scroll-behavior: smooth;
+        }
+
+        /* Scroll Progress Indicator */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #3b82f6 0%, #ec4899 100%);
+            z-index: 9999;
+            transition: width 0.1s ease-out;
+        }
+
+        /* --- Branding Gradient Effect --- */
+        .gradient-text {
+            background: linear-gradient(90deg, #3b82f6 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            text-shadow: 0 0 5px rgba(59, 130, 246, 0.5), 0 0 10px rgba(236, 72, 153, 0.5);
+        }
+
+        /* Gradient overlay inspired by the reference site for visual depth */
+        .gradient-overlay::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 10%, rgba(59, 130, 246, 0.1) 0%, transparent 40%);
+            z-index: 0;
+            opacity: 0.3;
+        }
+        
+        /* Neon text effect (less intense) */
+        .neon-text {
+            text-shadow: 0 0 3px #3b82f6, 0 0 5px #3b82f6;
+        }
+
+        /* Styling for the animated divider */
+        .animated-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, #3b82f6 20%, #ec4899 80%, transparent 100%);
+            width: 0%;
+            transition: width 0.8s ease-out;
+        }
+
+        .animated-divider.active {
+            width: 100%;
+        }
+
+        /* Utility classes for scroll animation triggers */
+        .anim-hidden {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .anim-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Magnetic button default transition */
+        .magnetic-button {
+            transition: transform 0.1s ease-out;
+            will-change: transform; /* Performance optimization */
+        }
+        
+        /* Tech Stack Logo Style */
+        .tech-logo {
+            filter: drop-shadow(0 0 4px #3b82f6);
+            transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
+        }
+        .tech-logo:hover {
+            transform: scale(1.15);
+            filter: drop-shadow(0 0 8px #ec4899);
+        }
+
+        /* Class for the loading indicator */
+        .loader {
+            animation: spin 1s linear infinite;
+        }
+
+        /* Enhanced Card Hover Effects */
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Particle Background Animation */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.4) 0%, transparent 70%);
+            pointer-events: none;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+            25% { transform: translate(10px, -10px) scale(1.1); opacity: 0.5; }
+            50% { transform: translate(-5px, -20px) scale(0.9); opacity: 0.4; }
+            75% { transform: translate(15px, -15px) scale(1.05); opacity: 0.6; }
+        }
+
+        /* Better Mobile Menu Animation */
+        #mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+        }
+        #mobile-menu.active {
+            max-height: 500px;
+        }
+
+        /* Skills Bar Animation */
+        .skill-bar {
+            height: 8px;
+            background: linear-gradient(90deg, #3b82f6 0%, #ec4899 100%);
+            border-radius: 10px;
+            transform-origin: left;
+            animation: expandBar 1.5s ease-out forwards;
+        }
+
+        @keyframes expandBar {
+            from { transform: scaleX(0); }
+            to { transform: scaleX(1); }
+        }
+
+        /* Back to Top Button */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #3b82f6 0%, #ec4899 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        #back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6);
+        }
+
+        /* Stats Counter Animation */
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #3b82f6 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+    </style>
+</head>
+<body class="gradient-overlay">
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress"></div>
+
+    <!-- Header & Navigation -->
+    <header class="sticky top-0 z-50 bg-primary-dark/95 backdrop-blur-sm shadow-lg border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
+            <a href="#hero" class="text-xl font-extrabold tracking-widest">
+                <span class="gradient-text">SAIMOHAN</span>
+            </a>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#about" class="text-text-light hover:text-accent-blue transition duration-300">About</a>
+                <a href="#skills" class="text-text-light hover:text-accent-blue transition duration-300">Skills</a>
+                <a href="#experience" class="text-text-light hover:text-accent-blue transition duration-300">Experience</a>
+                <a href="#projects" class="text-text-light hover:text-accent-blue transition duration-300">Projects</a>
+                <a href="#ai-engine" class="text-accent-pink hover:text-accent-pink/70 transition duration-300 font-bold">✨ AI Insight</a>
+                <a href="#certifications" class="text-text-light hover:text-accent-blue transition duration-300">Design Showcase</a>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden text-text-light focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+            </button>
+        </div>
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="md:hidden bg-primary-dark/90">
+            <nav class="flex flex-col space-y-2 px-4">
+                <a href="#about" class="block py-2 text-text-light hover:bg-secondary-dark rounded-md">About</a>
+                <a href="#skills" class="block py-2 text-text-light hover:bg-secondary-dark rounded-md">Skills</a>
+                <a href="#experience" class="block py-2 text-text-light hover:bg-secondary-dark rounded-md">Experience</a>
+                <a href="#projects" class="block py-2 text-text-light hover:bg-secondary-dark rounded-md">Projects</a>
+                <a href="#ai-engine" class="block py-2 text-accent-pink hover:bg-secondary-dark rounded-md font-bold">✨ AI Insight</a>
+                <a href="#certifications" class="block py-2 text-text-light hover:bg-secondary-dark rounded-md">Design Showcase</a>
+                <a href="#contact" class="block py-2 text-text-light hover:bg-secondary-dark rounded-md">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Sections -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- 1. Hero Section -->
+        <section id="hero" class="min-h-[85vh] flex flex-col justify-center items-center text-center pt-12 pb-16 relative overflow-hidden">
+            <!-- Floating Particles for Visual Interest -->
+            <div class="particle" style="width: 100px; height: 100px; top: 10%; left: 10%; animation-delay: 0s;"></div>
+            <div class="particle" style="width: 60px; height: 60px; top: 20%; right: 15%; animation-delay: 1s;"></div>
+            <div class="particle" style="width: 80px; height: 80px; bottom: 15%; left: 20%; animation-delay: 2s;"></div>
+            <div class="particle" style="width: 40px; height: 40px; top: 60%; right: 25%; animation-delay: 1.5s;"></div>
+
+            <div class="z-10 space-y-4">
+                <!-- Profile Image Placeholder -->
+                <div class="w-40 h-40 rounded-full overflow-hidden mx-auto border-4 border-accent-blue/50 shadow-xl shadow-accent-blue/20 mb-4 opacity-0 animate-[fade-in-up_1s_ease-out_forwards_0.2s]">
+                    <img src="images/Gemini_Generated_Image_e0l2m7e0l2m7e0l2-Photoroom (1).png" alt="Saimohan R Profile Picture" class="object-cover w-full h-full" onerror="this.onerror=null; this.src='https://placehold.co/128x128/111827/F3F4F6?text=Saimohan+R';">
+                </div>
+                
+                <p id="greeting" class="text-xl md:text-2xl text-gray-400 font-mono opacity-0 animate-[fade-in-up_1s_ease-out_forwards_0.5s]">
+                    Hello, I'm Saimohan R. I build the future.
+                </p>
+                <h1 class="text-5xl sm:text-7xl lg:text-8xl font-extrabold tracking-tight">
+                    <span id="job-title-1" class="block text-text-light opacity-0 animate-[fade-in-up_1s_ease-out_forwards_0.8s]">AI-POWERED</span>
+                    <span id="job-title-2" class="block mt-2 opacity-0 animate-[fade-in-up_1s_ease-out_forwards_1.1s]">
+                        <span class="gradient-text">FULL-STACK ENGINEER</span>
+                    </span>
+                </h1>
+                
+                <div class="mt-6 min-h-[40px] flex items-center justify-center">
+                    <p id="typing-text" class="text-lg md:text-xl font-light text-gray-300 inline"></p>
+                    <span id="cursor" class="text-accent-pink text-2xl animate-blink inline ml-1">|</span>
+                </div>
+
+                <div id="magnetic-area-parent" class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6 pt-6 opacity-0 animate-[fade-in-up_1s_ease-out_forwards_1.5s]">
+                    <a href="https://www.linkedin.com/in/saimohan-r-42367b287/" target="_blank" class="flex items-center space-x-2 px-6 py-3 bg-secondary-dark border-2 border-accent-blue text-accent-blue font-semibold rounded-lg shadow-lg hover:bg-accent-blue hover:text-primary-dark transition-all duration-300 group">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-linkedin group-hover:rotate-6 transition-transform duration-300"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+                        <span>LinkedIn</span>
+                    </a>
+                    <!-- Magnetic Button - The target element for the JS effect -->
+                    <a id="magnetic-cta" href="#contact" class="magnetic-button flex items-center space-x-2 px-6 py-3 bg-accent-pink/80 border-2 border-accent-pink text-primary-dark font-bold rounded-lg shadow-xl shadow-accent-pink/20 hover:bg-accent-pink transition-all duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                        <span>Start A Conversation</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. About Me Section -->
+        <section id="about" class="py-20 md:py-32 border-t border-gray-800">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-text-light mb-12 text-center anim-hidden">
+                My <span class="gradient-text">Story</span> & Mission
+            </h2>
+            <div class="animated-divider mx-auto mb-16"></div>
+
+            <div class="md:grid md:grid-cols-2 gap-12 items-center">
+                <div class="text-lg text-gray-300 leading-relaxed space-y-6 anim-hidden">
+                    <p class="border-l-4 border-accent-blue pl-4">I am a Software AI Developer focused on building intelligent, scalable enterprise solutions. My core expertise lies at the intersection of powerful AI APIs (ChatGPT, Gemini) and robust full-stack development using Java, Spring Boot, and React.js.</p>
+                    <p>I specialize in architecting LangGraph agentic workflows to automate complex content generation, gap analysis, and decision-making for e-learning and digital adoption platforms (SAP Enable Now, WalkMe).</p>
+                    <p>My mission is to translate intricate business needs into clean, efficient, and AI-driven systems that deliver real-time value and enhanced user experiences.</p>
+                </div>
+                <div class="mt-12 md:mt-0 space-y-8">
+                    <!-- Education Card -->
+                    <div class="p-6 bg-secondary-dark rounded-xl shadow-xl border border-gray-700 anim-hidden" data-delay="100">
+                        <h3 class="flex items-center text-xl font-bold text-accent-pink mb-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-graduation-cap mr-2"><path d="M21.42 10.982v4.036L12 19.998 2.58 15.018v-4.036L12 15.018l9.42-4.036z"/><path d="M12 2.018l9.42 5.036L12 12.088 2.58 7.054z"/></svg>
+                            Education
+                        </h3>
+                        <p class="text-text-light font-semibold">B.E. Electronics and Communication Engineering</p>
+                        <p class="text-gray-400 text-sm">College of Engineering Guindy, Anna University, Chennai (Sept 2022 - May 2025)</p>
+                        <p class="text-gray-400 text-sm mt-2">Diploma in ECE - Thiagarajar Polytechnic College, Salem (June 2019 - Apr 2022)</p>
+                    </div>
+
+                    <!-- Achievements Card -->
+                    <div class="p-6 bg-secondary-dark rounded-xl shadow-xl border border-gray-700 anim-hidden" data-delay="200">
+                        <h3 class="flex items-center text-xl font-bold text-accent-blue mb-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trophy mr-2"><path d="M6 9H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2"/><path d="M12 15c-3.3 0-6-2.7-6-6h12c0 3.3-2.7 6-6 6z"/><path d="M12 15V22"/></svg>
+                            Leadership & Impact
+                        </h3>
+                        <ul class="list-disc list-inside space-y-2 text-gray-400 text-base">
+                            <li>Mentored 60+ students in Java programming and electronics.</li>
+                            <li>Managed technical events and communications for CEG Tech Forum.</li>
+                            <li>Led NSS community outreach camps focused on social awareness.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 3. Skills Section (Now Section 3) -->
+        <section id="skills" class="py-20 md:py-32 border-t border-gray-800">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-text-light mb-12 text-center anim-hidden">
+                Core <span class="gradient-text">Skills</span> & Tech Stack
+            </h2>
+            <div class="animated-divider mx-auto mb-16"></div>
+            
+            <!-- NEW: Visual Tech Stack Grid for Density -->
+            <div class="grid grid-cols-4 sm:grid-cols-8 lg:grid-cols-10 gap-6 justify-items-center mb-16 p-4 bg-secondary-dark/50 rounded-xl anim-hidden" data-delay="0">
+                <!-- Row of Icons for key technologies -->
+                <div class="tech-logo text-white" title="Java">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#f89820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-coffee"><path d="M10 21V6H5a3 3 0 0 1 0-6h9a3 3 0 0 1 3 3v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h2a3 3 0 0 1 3 3v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h2a3 3 0 0 1 3 3v2a1 1 0 0 1-1 1H8v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-2"/></svg>
+                </div>
+                <div class="tech-logo text-white" title="Spring Boot">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#6db33f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-leaf"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.6 2.5 19.5 5.2 21 8c-3.8 2-8.3 1.2-11.7 2.4l-3.2 4.1c-.7.9-.9 2.2-.4 3.3.5 1.1 1.7 1.8 2.9 1.4L11 20z"/></svg>
+                </div>
+                <div class="tech-logo text-white" title="React.js">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#61dafb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                </div>
+                <div class="tech-logo text-white" title="Python / LangGraph">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#3776ab" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-python"><path d="M12 2v20"/><path d="M5 5l14 14"/><path d="M5 19l14-14"/></svg>
+                </div>
+                <div class="tech-logo text-white" title="Docker">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#0db7ed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-box"><path d="M21 12V7H3v5"/><path d="M20 12h-4a2 2 0 0 1-2-2V7"/><path d="M12 20h.01"/><path d="M12 16h.01"/><path d="M12 12h.01"/><path d="M21 12v5a2 2 0 0 1-2 2h-4"/><path d="M3 12v5a2 2 0 0 0 2 2h4"/></svg>
+                </div>
+                <div class="tech-logo text-white" title="MySQL">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#00758F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-database"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                </div>
+                <div class="tech-logo text-white" title="SAP Enable Now">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#0091DA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-monitor-dot"><path d="M10 12h.01"/><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M12 21h.01"/></svg>
+                </div>
+                <div class="tech-logo text-white" title="WalkMe">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#00ff00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-hand-metal"><path d="m18 10-2.5-4.5a3 3 0 0 0-5.4 0l-2.5 4.5"/><path d="M7 10h10"/><path d="M5 10c0 4-2 7-5 7"/><path d="M22 17c-3 0-5-3-5-7"/><path d="M17 17h-2"/><path d="M14 17h-2"/><path d="M11 17h-2"/><path d="M7 17h-2"/></svg>
+                </div>
+            </div>
+
+            <!-- Skills Proficiency Visualization -->
+            <div class="mb-16 p-8 bg-secondary-dark/70 rounded-xl shadow-2xl border border-gray-700 anim-hidden" data-delay="100">
+                <h3 class="text-2xl font-bold text-text-light mb-6 text-center">Proficiency Levels</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Skill 1 -->
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-300 font-semibold">Java & Spring Boot</span>
+                            <span class="text-accent-blue font-bold">90%</span>
+                        </div>
+                        <div class="w-full bg-gray-800 rounded-full h-2 overflow-hidden">
+                            <div class="skill-bar" style="width: 90%;"></div>
+                        </div>
+                    </div>
+                    <!-- Skill 2 -->
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-300 font-semibold">React.js & Frontend</span>
+                            <span class="text-accent-blue font-bold">85%</span>
+                        </div>
+                        <div class="w-full bg-gray-800 rounded-full h-2 overflow-hidden">
+                            <div class="skill-bar" style="width: 85%; animation-delay: 0.2s;"></div>
+                        </div>
+                    </div>
+                    <!-- Skill 3 -->
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-300 font-semibold">AI/ML (LangGraph, Gemini)</span>
+                            <span class="text-accent-pink font-bold">88%</span>
+                        </div>
+                        <div class="w-full bg-gray-800 rounded-full h-2 overflow-hidden">
+                            <div class="skill-bar" style="width: 88%; animation-delay: 0.4s;"></div>
+                        </div>
+                    </div>
+                    <!-- Skill 4 -->
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-300 font-semibold">Database & SQL</span>
+                            <span class="text-accent-pink font-bold">87%</span>
+                        </div>
+                        <div class="w-full bg-gray-800 rounded-full h-2 overflow-hidden">
+                            <div class="skill-bar" style="width: 87%; animation-delay: 0.6s;"></div>
+                        </div>
+                    </div>
+                    <!-- Skill 5 -->
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-300 font-semibold">SAP Enable Now & WalkMe</span>
+                            <span class="text-accent-blue font-bold">82%</span>
+                        </div>
+                        <div class="w-full bg-gray-800 rounded-full h-2 overflow-hidden">
+                            <div class="skill-bar" style="width: 82%; animation-delay: 0.8s;"></div>
+                        </div>
+                    </div>
+                    <!-- Skill 6 -->
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-300 font-semibold">Docker & DevOps</span>
+                            <span class="text-accent-blue font-bold">75%</span>
+                        </div>
+                        <div class="w-full bg-gray-800 rounded-full h-2 overflow-hidden">
+                            <div class="skill-bar" style="width: 75%; animation-delay: 1s;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                
+                <!-- Category 1: AI & Workflow -->
+                <div class="p-6 bg-secondary-dark rounded-xl shadow-2xl border border-gray-700 hover:border-accent-blue transition duration-300 anim-hidden" data-delay="100">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bot text-accent-blue"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M14.5 8a.5.5 0 0 0-1 0v11.5a.5.5 0 0 0 1 0z"/><path d="M8 10.5a.5.5 0 0 1 1 0v9.5a.5.5 0 0 1-1 0z"/></svg>
+                        <h3 class="text-2xl font-semibold text-text-light">AI & Workflow Automation</h3>
+                    </div>
+                    <ul class="space-y-2 text-gray-400 font-light">
+                        <li class="flex items-center"><span class="text-accent-pink mr-2">&bull;</span> LangGraph Agentic Workflows</li>
+                        <li class="flex items-center"><span class="text-accent-pink mr-2">&bull;</span> Gemini/ChatGPT API Integration</li>
+                        <li class="flex items-center"><span class="text-accent-pink mr-2">&bull;</span> Content Generation & Analysis</li>
+                        <li class="flex items-center"><span class="text-accent-pink mr-2">&bull;</span> N8N / API Orchestration</li>
+                    </ul>
+                </div>
+
+                <!-- Category 2: Full-Stack Development -->
+                <div class="p-6 bg-secondary-dark rounded-xl shadow-2xl border border-gray-700 hover:border-accent-blue transition duration-300 anim-hidden" data-delay="200">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-grid text-accent-blue"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+                        <h3 class="text-2xl font-semibold text-text-light">Full-Stack & Backend</h3>
+                    </div>
+                    <ul class="space-y-2 text-gray-400 font-light">
+                        <li class="flex items-center"><span class="text-accent-pink mr-2">&bull;</span> Java & Spring Boot (Microservices)</li>
+                        <li class="flex items-center"><span class="text-accent-pink mr-2">&bull;</span> React.js & Node.js/Express</li>
+                        <li class="flex items-center"><span class="text-accent-pink mr-2">&bull;</span> RESTful APIs & JDBC/SQL</li>
+                        <li class="flex items-center"><span class="text-accent-pink mr-2">&bull;</span> MySQL, MongoDB, PostgreSQL</li>
+                    </ul>
+                </div>
+
+                <!-- Category 3: Enterprise & DevOps -->
+                <div class="p-6 bg-secondary-dark rounded-xl shadow-2xl border border-gray-700 hover:border-accent-blue transition duration-300 anim-hidden" data-delay="300">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-server-cog text-accent-blue"><rect width="20" height="8" x="2" y="2" rx="2"/><rect width="20" height="8" x="2" y="14" rx="2"/><path d="M12 6h.01"/><path d="M17 6h.01"/><path d="M7 6h.01"/><path d="M12 18h.01"/><path d="M17 18h.01"/><path d="M7 18h.01"/></svg>
+                        <h3 class="text-2xl font-semibold text-text-light">Enterprise & Digital Adoption</h3>
+                    </div>
+                    <ul class="space-y-2 text-gray-400 font-light">
+                        <li class="flex items-center"><span class="text-accent-pink mr-2">&bull;</span> SAP Enable Now Solutions</li>
+                        <li class="flex items-center"><span class="text-accent-pink mr-2">&bull;</span> WalkMe Implementation</li>
+                        <li class="flex items-center"><span class="text-pink mr-2">&bull;</span> Git, Docker</li>
+                        <li class="flex items-center"><span class="text-accent-pink mr-2">&bull;</span> Technical Documentation (Nokia)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Experience Section -->
+        <section id="experience" class="py-20 md:py-32 border-t border-gray-800">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-text-light mb-12 text-center anim-hidden">
+                Professional <span class="gradient-text">Experience</span>
+            </h2>
+            <div class="animated-divider mx-auto mb-16"></div>
+
+            <!-- Job 1: Software AI Developer -->
+            <div class="relative hover-lift mb-12 p-6 md:p-8 bg-secondary-dark rounded-xl shadow-2xl border-l-4 border-accent-blue hover:border-accent-blue/80 transition duration-300 anim-hidden">
+                <div class="flex justify-between items-start mb-2">
+                    <h3 class="text-2xl font-bold text-text-light">Software AI Developer</h3>
+                    <span class="text-sm font-mono text-gray-400 bg-gray-900 px-3 py-1 rounded-full border border-gray-700">Oct 2025 - Present</span>
+                </div>
+                <div class="flex items-center space-x-3 mb-4">
+                    <img src="images/logo_mark_360.png" alt="Clamshell Logo" class="w-10 h-10 object-contain">
+                    <p class="text-accent-blue font-semibold text-lg">Clamshell Pvt. Ltd, Bangalore</p>
+                </div>
+                <ul class="list-disc list-inside space-y-3 text-gray-300">
+                    <li class="pl-2">Architected and deployed enterprise AI instructional design platform integrating ChatGPT 4.0 and Gemini for automated e-learning content generation.</li>
+                    <li class="pl-2">Led the development of complex LangGraph agentic systems to orchestrate multi-stage AI processes, including gap analysis and intelligent reporting.</li>
+                    <li class="pl-2">Built scalable microservices backend using Java, Spring Boot, and RESTful APIs, handling approval systems and real-time user interactions.</li>
+                    <li class="pl-2">Implemented SAP Enable Now and WalkMe solutions, driving measurable improvements in enterprise training efficiency and user onboarding.</li>
+                </ul>
+            </div>
+
+            <!-- Job 2: AI Research Intern -->
+            <div class="relative hover-lift mb-12 p-6 md:p-8 bg-secondary-dark rounded-xl shadow-2xl border-l-4 border-accent-pink hover:border-accent-pink/80 transition duration-300 anim-hidden" data-delay="150">
+                <div class="flex justify-between items-start mb-2">
+                    <h3 class="text-2xl font-bold text-text-light">AI Research Intern</h3>
+                    <span class="text-sm font-mono text-gray-400 bg-gray-900 px-3 py-1 rounded-full border border-gray-700">Jul 2025 - Sept 2025</span>
+                </div>
+                <div class="flex items-center space-x-3 mb-4">
+                    <img src="images/logo_mark_360.png" alt="Clamshell Logo" class="w-10 h-10 object-contain">
+                    <p class="text-accent-pink font-semibold text-lg">Clamshell Pvt. Ltd, Bangalore</p>
+                </div>
+                <ul class="list-disc list-inside space-y-3 text-gray-300">
+                    <li class="pl-2">Prototyped an AI-driven content recommendation engine, enhancing personalized learning paths using the ChatGPT API.</li>
+                    <li class="pl-2">Designed and documented the RESTful API architecture for content analysis and gap detection feedback loops.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 5. Projects Section -->
+        <section id="projects" class="py-20 md:py-32 border-t border-gray-800">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-text-light mb-12 text-center anim-hidden">
+                Key <span class="gradient-text">Projects</span>
+            </h2>
+            <div class="animated-divider mx-auto mb-16"></div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                
+                <!-- Project 1: AI Instructional Designer Platform -->
+                <div class="group hover-lift bg-secondary-dark rounded-xl overflow-hidden shadow-2xl border border-gray-700 hover:border-accent-blue transition-all duration-500 anim-hidden">
+                    <div class="p-6">
+                        <span class="text-xs font-mono text-gray-500 bg-gray-900 px-2 py-1 rounded-full border border-gray-700">AI / Full-Stack</span>
+                        <h3 class="text-3xl font-bold text-text-light mt-4 mb-2 group-hover:text-accent-blue transition duration-300">AI Instructional Designer Platform</h3>
+                        <p class="text-sm font-semibold text-gray-400">Tech: React.js, Spring Boot, LangGraph, ChatGPT</p>
+                        <p id="project-desc-1" class="text-gray-300 mt-4">Built an end-to-end platform for intelligent e-learning workflows, featuring a LangGraph-based agentic system for multi-stage content processing, state management, and decision automation.</p>
+                        
+                        <!-- Buttons for project details -->
+                        <div class="mt-6 flex flex-col md:flex-row gap-4">
+                            <a href="#" class="flex-1 text-center bg-accent-pink/10 border border-accent-pink text-accent-pink py-2 rounded-lg font-semibold hover:bg-accent-pink hover:text-primary-dark transition-colors duration-300">
+                                View Architecture & Demo
+                            </a>
+                            <a href="https://github.com/saimohan24092003" target="_blank" class="flex-1 text-center bg-secondary-dark border border-gray-700 text-gray-400 py-2 rounded-lg font-semibold hover:bg-gray-700 transition-colors duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-github inline mr-1"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.44-.78-3.5.38-1.04.54-2.11.54-3.2 0-.23-.01-.46-.02-.69 0-2.7-2.1-4.9-5-4.9A10.51 10.51 0 0 0 12 3c-1.8 0-3.5.46-5 1.25-.01.23-.02.46-.02.69 0 1.08.16 2.15.54 3.2-.51 1.06-.86 2.25-.78 3.5 0 3.5 3 5.5 6 5.5-1 1-1 2.2-1 3.5v4"/><path d="M12 2v20"/></svg>
+                                GitHub Repo
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2: Bank Management System -->
+                <div class="group hover-lift bg-secondary-dark rounded-xl overflow-hidden shadow-2xl border border-gray-700 hover:border-accent-pink transition-all duration-500 anim-hidden" data-delay="150">
+                    <div class="p-6">
+                        <span class="text-xs font-mono text-gray-500 bg-gray-900 px-2 py-1 rounded-full border border-gray-700">Backend / Database</span>
+                        <h3 class="text-3xl font-bold text-text-light mt-4 mb-2 group-hover:text-accent-pink transition duration-300">Bank Management System</h3>
+                        <p class="text-sm font-semibold text-gray-400">Tech: Java, MySQL, JDBC</p>
+                        <p id="project-desc-2" class="text-gray-300 mt-4">Developed a robust banking application with secure authentication, real-time transaction management, and automated monthly statements. Optimized query performance for concurrent operations.</p>
+                        
+                        <!-- Buttons for project details -->
+                        <div class="mt-6 flex flex-col md:flex-row gap-4">
+                            <a href="#" class="flex-1 text-center bg-accent-blue/10 border border-accent-blue text-accent-blue py-2 rounded-lg font-semibold hover:bg-accent-blue hover:text-primary-dark transition-colors duration-300">
+                                View Data Model
+                            </a>
+                            <a href="https://github.com/saimohan24092003" target="_blank" class="flex-1 text-center bg-secondary-dark border border-gray-700 text-gray-400 py-2 rounded-lg font-semibold hover:bg-gray-700 transition-colors duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-github inline mr-1"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.44-.78-3.5.38-1.04.54-2.11.54-3.2 0-.23-.01-.46-.02-.69 0-2.7-2.1-4.9-5-4.9A10.51 10.51 0 0 0 12 3c-1.8 0-3.5.46-5 1.25-.01.23-.02.46-.02.69 0 1.08.16 2.15.54 3.2-.51 1.06-.86 2.25-.78 3.5 0 3.5 3 5.5 6 5.5-1 1-1 2.2-1 3.5v4"/><path d="M12 2v20"/></svg>
+                                GitHub Repo
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 6. AI INSIGHT ENGINE (NEW SECTION USING GEMINI API) -->
+        <section id="ai-engine" class="py-20 md:py-32 border-t border-gray-800">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-text-light mb-4 text-center anim-hidden">
+                The <span class="gradient-text">AI Insight</span> Engine
+            </h2>
+            <p class="text-xl text-gray-400 text-center mb-12 anim-hidden" data-delay="100">Leverage Gemini's intelligence to analyze my portfolio or generate deep insights.</p>
+            <div class="animated-divider mx-auto mb-16"></div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- AI Feature 1: Project Complexity Analyzer -->
+                <div class="hover-lift p-6 bg-secondary-dark rounded-xl shadow-2xl border border-gray-700 anim-hidden">
+                    <h3 class="flex items-center text-xl font-bold text-accent-blue mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cpu-cog mr-2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M12 10a2 2 0 0 0-2 2h4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="1"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M20 12h2"/><path d="M2 12h2"/><path d="M19 19l-1-1"/><path d="M5 5l-1-1"/></svg>
+                        Project Complexity Analyzer (LLM Only)
+                    </h3>
+                    <p class="text-gray-400 mb-4">Select a project to generate an executive summary focused on its technological complexity and business value, written by an LLM.</p>
+                    
+                    <select id="project-selector" class="w-full p-3 mb-4 rounded-lg bg-gray-800 border border-gray-700 text-text-light focus:ring-accent-blue focus:border-accent-blue transition">
+                        <option value="">-- Select a Project --</option>
+                        <option value="1">AI Instructional Designer Platform (LangGraph, Spring Boot)</option>
+                        <option value="2">Bank Management System (Java, MySQL, JDBC)</option>
+                    </select>
+
+                    <button id="generate-summary-btn" class="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-accent-pink text-primary-dark font-bold rounded-lg hover:bg-accent-pink/80 transition-colors duration-300">
+                        <svg id="summary-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text-v2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M10 12H8"/><path d="M16 12h-2"/><path d="M16 16H8"/></svg>
+                        <span id="summary-btn-text">Generate AI Summary</span>
+                    </button>
+                </div>
+
+                <!-- AI Feature 2: Competitive Market Analyst -->
+                <div class="hover-lift p-6 bg-secondary-dark rounded-xl shadow-2xl border border-gray-700 anim-hidden" data-delay="150">
+                    <h3 class="flex items-center text-xl font-bold text-accent-pink mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rocket mr-2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.62 1.55-1.22 2.44-1.74"/></svg>
+                        Competitive Analyst (LLM + Search)
+                    </h3>
+                    <p class="text-gray-400 mb-4">Generate a real-time, grounded analysis of my unique skill set (AI & Enterprise Platforms) against current market trends.</p>
+
+                    <button id="analyze-market-btn" class="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-accent-blue text-primary-dark font-bold rounded-lg hover:bg-accent-blue/80 transition-colors duration-300 mt-16">
+                        <svg id="analyst-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trending-up"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+                        <span id="analyst-btn-text">Run Market Analysis</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- AI Output Panel -->
+            <div id="ai-output-panel" class="mt-16 p-8 bg-secondary-dark/70 rounded-xl shadow-2xl border border-gray-700 anim-hidden hidden">
+                <h3 class="text-2xl font-bold text-text-light mb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bot text-accent-pink mr-2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M14.5 8a.5.5 0 0 0-1 0v11.5a.5.5 0 0 0 1 0z"/><path d="M8 10.5a.5.5 0 0 1 1 0v9.5a.5.5 0 0 1-1 0z"/></svg>
+                    AI Response
+                </h3>
+                <div id="ai-output-content" class="text-gray-300 leading-relaxed whitespace-pre-wrap">
+                    Awaiting analysis...
+                </div>
+                <div id="ai-sources" class="mt-4 pt-4 border-t border-gray-800 text-sm text-gray-500 hidden">
+                    <p class="font-semibold mb-1">Sources:</p>
+                    <ul id="ai-sources-list" class="list-disc list-inside space-y-1"></ul>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 7. Design Showcase (Certifications) Section -->
+        <section id="certifications" class="py-20 md:py-32 border-t border-gray-800">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-text-light mb-12 text-center anim-hidden">
+                Creative <span class="gradient-text">Design Showcase</span> & Validation
+            </h2>
+            <p class="text-lg text-gray-400 text-center mb-16 anim-hidden" data-delay="100">Leveraging tools like Canva and Figma for prototyping and visual asset creation.</p>
+            <div class="animated-divider mx-auto mb-16"></div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Cert 1: Full-Stack Web Development -->
+                <div class="p-6 bg-secondary-dark rounded-xl shadow-2xl border border-gray-700 flex flex-col items-center text-center hover:border-accent-blue transition duration-300 anim-hidden" data-delay="100">
+                    <div class="w-24 h-24 mb-4 flex items-center justify-center rounded-full bg-accent-blue/20 border-4 border-accent-blue animate-pulse-glow">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-code-2"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-text-light">Full-Stack Web Development</h3>
+                    <p class="text-sm text-gray-400">Udemy - React.js, Node.js, MongoDB</p>
+                    <span class="mt-3 text-xs font-semibold text-green-400 bg-green-900/50 px-3 py-1 rounded-full">Completed</span>
+                </div>
+
+                <!-- Cert 2: Data Analytics Job Simulation -->
+                <div class="p-6 bg-secondary-dark rounded-xl shadow-2xl border border-gray-700 flex flex-col items-center text-center hover:border-accent-pink transition duration-300 anim-hidden" data-delay="200">
+                    <div class="w-24 h-24 mb-4 flex items-center justify-center rounded-full bg-accent-pink/20 border-4 border-accent-pink animate-pulse-glow">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bar-chart-3"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-text-light">Data Analytics Simulation</h3>
+                    <p class="text-sm text-gray-400">Deloitte via Forage</p>
+                    <span class="mt-3 text-xs font-semibold text-green-400 bg-green-900/50 px-3 py-1 rounded-full">Completed</span>
+                </div>
+
+                <!-- Cert 3: Figma/Canva Placeholder -->
+                <div class="p-6 bg-secondary-dark rounded-xl shadow-2xl border border-gray-700 flex flex-col items-center text-center hover:border-accent-blue transition duration-300 anim-hidden" data-delay="300">
+                    <div class="w-24 h-24 mb-4 flex items-center justify-center rounded-full bg-accent-blue/20 border-4 border-accent-blue">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pen-tool"><path d="m12 19 7-7 3 3-7 7-3-3z"/><path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18z"/></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-text-light">Design Thinking & Prototyping</h3>
+                    <p class="text-sm text-gray-400">Visual Asset Creation (Canva/Figma)</p>
+                    <a href="#" class="mt-3 text-xs font-semibold text-accent-pink border border-accent-pink/50 px-3 py-1 rounded-full hover:bg-accent-pink/10">View Design Work</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. Impact & Stats Section -->
+        <section id="stats" class="py-20 md:py-32 border-t border-gray-800">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-text-light mb-12 text-center anim-hidden">
+                Measurable <span class="gradient-text">Impact</span>
+            </h2>
+            <div class="animated-divider mx-auto mb-16"></div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <!-- Stat 1 -->
+                <div class="text-center p-6 bg-secondary-dark/50 rounded-xl border border-gray-700 hover-lift anim-hidden">
+                    <div class="stat-number mb-2">60+</div>
+                    <p class="text-gray-400 font-semibold">Students Mentored</p>
+                </div>
+
+                <!-- Stat 2 -->
+                <div class="text-center p-6 bg-secondary-dark/50 rounded-xl border border-gray-700 hover-lift anim-hidden" data-delay="100">
+                    <div class="stat-number mb-2">5+</div>
+                    <p class="text-gray-400 font-semibold">AI Projects Deployed</p>
+                </div>
+
+                <!-- Stat 3 -->
+                <div class="text-center p-6 bg-secondary-dark/50 rounded-xl border border-gray-700 hover-lift anim-hidden" data-delay="200">
+                    <div class="stat-number mb-2">100%</div>
+                    <p class="text-gray-400 font-semibold">Client Satisfaction</p>
+                </div>
+
+                <!-- Stat 4 -->
+                <div class="text-center p-6 bg-secondary-dark/50 rounded-xl border border-gray-700 hover-lift anim-hidden" data-delay="300">
+                    <div class="stat-number mb-2">2+</div>
+                    <p class="text-gray-400 font-semibold">Years Experience</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. Contact Section -->
+        <section id="contact" class="py-20 md:py-32 border-t border-gray-800 text-center">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-text-light mb-4 anim-hidden">
+                Ready to <span class="gradient-text">Collaborate</span>?
+            </h2>
+            <p class="text-xl text-gray-400 mb-12 anim-hidden" data-delay="100">Let's discuss how AI-driven solutions can transform your projects.</p>
+            
+            <a href="mailto:kannansaimohan2003@gmail.com" class="inline-flex items-center space-x-3 px-8 py-4 bg-accent-pink/90 border-2 border-accent-pink text-primary-dark font-bold text-lg rounded-full shadow-2xl shadow-accent-pink/40 hover:bg-accent-pink transition-all duration-500 transform hover:scale-105 anim-hidden" data-delay="200">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.293 6.707a1 1 0 0 1-1.414 0L2 7"/></svg>
+                <span>Email Me Directly</span>
+            </a>
+
+            <!-- Social Links -->
+            <div class="mt-12 flex justify-center space-x-6 anim-hidden" data-delay="300">
+                <a href="https://www.linkedin.com/in/saimohan-r-42367b287/" target="_blank" class="text-gray-400 hover:text-accent-blue transition-colors duration-300 transform hover:scale-110">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+                </a>
+                <a href="https://github.com/saimohan24092003" target="_blank" class="text-gray-400 hover:text-accent-blue transition-colors duration-300 transform hover:scale-110">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-github"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.44-.78-3.5.38-1.04.54-2.11.54-3.2 0-.23-.01-.46-.02-.69 0-2.7-2.1-4.9-5-4.9A10.51 10.51 0 0 0 12 3c-1.8 0-3.5.46-5 1.25-.01.23-.02.46-.02.69 0 1.08.16 2.15.54 3.2-.51 1.06-.86 2.25-.78 3.5 0 3.5 3 5.5 6 5.5-1 1-1 2.2-1 3.5v4"/><path d="M12 2v20"/></svg>
+                </a>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Back to Top Button -->
+    <div id="back-to-top">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-20 py-8 text-center border-t border-gray-900">
+        <p class="text-sm text-gray-600 font-mono">SAIMOHAN | Built with Interactive Code & Passion. &copy; 2025</p>
+    </footer>
+
+    <!-- JavaScript for Interactivity and Animations and GEMINI API -->
+    <script>
+        // Global project data for the AI Engine
+        const projectData = {
+            1: {
+                name: "AI Instructional Designer Platform",
+                description: "Built an end-to-end platform for intelligent e-learning workflows, featuring a LangGraph-based agentic system for multi-stage content processing, state management, and decision automation. The stack includes React.js, Spring Boot, LangGraph, and integrated Gemini/ChatGPT APIs.",
+                techStack: ["React.js", "Spring Boot", "LangGraph", "Gemini API", "ChatGPT API", "Microservices"]
+            },
+            2: {
+                name: "Bank Management System",
+                description: "Developed a robust banking application with secure authentication, real-time transaction management, and automated monthly statements. Optimized query performance for concurrent operations using Java, MySQL, and JDBC. Implemented transaction rollback mechanisms.",
+                techStack: ["Java", "MySQL", "JDBC", "SQL", "Authentication", "Concurrency Optimization"]
+            }
+        };
+
+        // --- GEMINI API Configuration ---
+        const API_KEY = "AIzaSyD01BdEgF_Glvp4lW7JuG_nI88eHrHBcNg";
+        const BASE_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${API_KEY}`;
+        const RETRY_ATTEMPTS = 3;
+        const INITIAL_RETRY_DELAY = 1000;
+        let isMarkedLoaded = false; // Flag to track marked.js load status
+
+        /**
+         * Generic fetch wrapper with exponential backoff for Gemini API calls.
+         * @param {string} url - The API URL.
+         * @param {object} payload - The JSON payload for the request.
+         * @param {number} maxRetries - Maximum number of retries.
+         * @param {number} delay - Initial delay in milliseconds.
+         */
+        async function fetchWithRetry(url, payload, maxRetries = RETRY_ATTEMPTS, delay = INITIAL_RETRY_DELAY) {
+            for (let attempt = 0; attempt < maxRetries; attempt++) {
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (response.status === 429 && attempt < maxRetries - 1) {
+                        // Too Many Requests, wait and retry
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        delay *= 2; // Exponential backoff
+                        continue;
+                    }
+                    
+                    if (!response.ok) {
+                        const errorBody = await response.json();
+                        throw new Error(`API call failed: ${response.status} - ${errorBody.error.message}`);
+                    }
+
+                    return response.json();
+
+                } catch (error) {
+                    if (attempt === maxRetries - 1) {
+                        console.error("Gemini API request failed after multiple retries:", error);
+                        throw new Error(`Failed to connect to the AI engine. Please check the console for details.`);
+                    }
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    delay *= 2;
+                }
+            }
+        }
+
+        /**
+         * Updates the UI to show a loading state.
+         * @param {HTMLElement} btnIcon - The button icon element.
+         * @param {HTMLElement} btnText - The button text element.
+         */
+        function setLoadingState(btnIcon, btnText) {
+            document.getElementById('ai-output-panel').classList.remove('hidden');
+            document.getElementById('ai-output-content').innerHTML = `
+                <div class="flex items-center space-x-3 text-accent-blue">
+                    <svg class="loader w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+                    <span>Processing request through Gemini...</span>
+                </div>
+            `;
+            document.getElementById('ai-sources').classList.add('hidden');
+            btnIcon.classList.add('loader');
+            btnText.textContent = "Analyzing...";
+        }
+
+        /**
+         * Resets the button UI after processing.
+         * @param {HTMLElement} btnIcon - The button icon element.
+         * @param {HTMLElement} btnText - The button text element.
+         * @param {string} originalIconClass - The original class of the icon.
+         * @param {string} originalText - The original text content.
+         */
+        function resetBtn(btnIcon, btnText, originalIconClass, originalText) {
+            btnIcon.classList.remove('loader');
+            // Re-create the icon element to restore its original state and class
+            const newIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            newIcon.id = btnIcon.id;
+            newIcon.setAttribute('width', '20');
+            newIcon.setAttribute('height', '20');
+            newIcon.setAttribute('viewBox', '0 0 24 24');
+            newIcon.setAttribute('fill', 'none');
+            newIcon.setAttribute('stroke', 'currentColor');
+            newIcon.setAttribute('stroke-width', '2');
+            newIcon.setAttribute('stroke-linecap', 'round');
+            newIcon.setAttribute('stroke-linejoin', 'round');
+            newIcon.className = originalIconClass; // Set the original class
+
+            // Replace the spinning icon with the original markup
+            if (btnIcon.id === 'summary-icon') {
+                 newIcon.innerHTML = '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M10 12H8"/><path d="M16 12h-2"/><path d="M16 16H8"/>';
+            } else if (btnIcon.id === 'analyst-icon') {
+                newIcon.innerHTML = '<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>';
+            }
+            btnIcon.replaceWith(newIcon);
+
+            // Restore text content
+            btnText.textContent = originalText;
+        }
+
+        /**
+         * Generates an executive summary for a selected project using Gemini.
+         * @param {string} projectId - ID of the project to analyze.
+         */
+        async function generateProjectSummary(projectId) {
+            if (!isMarkedLoaded) {
+                document.getElementById('ai-output-content').textContent = "Markdown parser is still loading. Please try again in a moment.";
+                document.getElementById('ai-output-panel').classList.remove('hidden');
+                return;
+            }
+            
+            const project = projectData[projectId];
+            if (!project) {
+                document.getElementById('ai-output-content').textContent = "Please select a valid project first.";
+                document.getElementById('ai-output-panel').classList.remove('hidden');
+                return;
+            }
+
+            const btn = document.getElementById('generate-summary-btn');
+            // We must re-fetch btnIcon/btnText as resetBtn replaces the icon element
+            let btnIcon = document.getElementById('summary-icon');
+            let btnText = document.getElementById('summary-btn-text');
+            const originalIconClass = btnIcon.className; // Capture original class before manipulation
+            const originalText = btnText.textContent; // Capture original text
+
+            btn.disabled = true;
+            setLoadingState(btnIcon, btnText);
+
+            const userQuery = `Generate an executive summary for the following project: ${project.name}. Focus on the technological complexity, the integrated AI workflow (LangGraph/Gemini), and the resulting business value to an enterprise client. Project details: ${project.description}.`;
+            
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                systemInstruction: {
+                    parts: [{ text: "Act as a CTO with deep knowledge of full-stack architecture and AI systems. Provide a concise, three-paragraph analysis in markdown format, using bolding for key terms." }]
+                }
+            };
+
+            try {
+                const result = await fetchWithRetry(BASE_URL, payload);
+                const text = result.candidates?.[0]?.content?.parts?.[0]?.text || "AI failed to generate content.";
+                document.getElementById('ai-output-content').innerHTML = marked.parse(text); // Use marked to render markdown
+                document.getElementById('ai-sources').classList.add('hidden'); // Hide sources for LLM-only call
+
+            } catch (error) {
+                document.getElementById('ai-output-content').textContent = `Error: ${error.message}`;
+            } finally {
+                btn.disabled = false;
+                // Re-fetch icon/text elements before passing them to resetBtn
+                btnIcon = document.getElementById('summary-icon');
+                btnText = document.getElementById('summary-btn-text');
+                resetBtn(btnIcon, btnText, originalIconClass, originalText); // Pass all required arguments
+                lucide.createIcons(); // Re-initialize icons after reset
+            }
+        }
+
+
+        /**
+         * Performs a competitive market analysis using Gemini with Google Search grounding.
+         */
+        async function analyzeMarket() {
+            if (!isMarkedLoaded) {
+                document.getElementById('ai-output-content').textContent = "Markdown parser is still loading. Please try again in a moment.";
+                document.getElementById('ai-output-panel').classList.remove('hidden');
+                return;
+            }
+
+            const btn = document.getElementById('analyze-market-btn');
+            // We must re-fetch btnIcon/btnText as resetBtn replaces the icon element
+            let btnIcon = document.getElementById('analyst-icon');
+            let btnText = document.getElementById('analyst-btn-text');
+            const originalIconClass = btnIcon.className; // Capture original class before manipulation
+            const originalText = btnText.textContent; // Capture original text
+
+
+            btn.disabled = true;
+            setLoadingState(btnIcon, btnText);
+
+            const skills = [
+                "Software AI Developer", "LangGraph workflows", "Java Spring Boot Microservices", 
+                "React.js frontend", "SAP Enable Now", "WalkMe digital adoption"
+            ].join(", ");
+
+            const userQuery = `Based on the current tech hiring landscape, analyze the market demand and career trajectory for a professional with the following combined skill set: ${skills}. Provide a concise analysis that identifies 3 key growth areas and uses real-time, grounded data.`;
+            
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                tools: [{ "google_search": {} }],
+                systemInstruction: {
+                    parts: [{ text: "Act as a Senior Market Analyst. Provide an analysis in markdown using three clearly numbered paragraphs (1-3) about growth areas and job trends. Include citations if grounding is used." }]
+                }
+            };
+
+            try {
+                const result = await fetchWithRetry(BASE_URL, payload);
+                const candidate = result.candidates?.[0];
+                const text = candidate?.content?.parts?.[0]?.text || "AI failed to generate content or no current data is available.";
+                
+                document.getElementById('ai-output-content').innerHTML = marked.parse(text);
+
+                // Handle grounding sources
+                const sourcesList = document.getElementById('ai-sources-list');
+                sourcesList.innerHTML = ''; 
+                
+                const groundingMetadata = candidate?.groundingMetadata;
+                if (groundingMetadata && groundingMetadata.groundingAttributions) {
+                    let sources = groundingMetadata.groundingAttributions
+                        .map(attribution => ({
+                            uri: attribution.web?.uri,
+                            title: attribution.web?.title,
+                        }))
+                        .filter(source => source.uri && source.title);
+
+                    if (sources.length > 0) {
+                        sources.forEach(source => {
+                            const li = document.createElement('li');
+                            li.innerHTML = `<a href="${source.uri}" target="_blank" class="text-accent-blue hover:underline">${source.title}</a>`;
+                            sourcesList.appendChild(li);
+                        });
+                        document.getElementById('ai-sources').classList.remove('hidden');
+                    } else {
+                        document.getElementById('ai-sources').classList.add('hidden');
+                    }
+                } else {
+                    document.getElementById('ai-sources').classList.add('hidden');
+                }
+
+
+            } catch (error) {
+                document.getElementById('ai-output-content').textContent = `Error: ${error.message}`;
+            } finally {
+                btn.disabled = false;
+                // Re-fetch icon/text elements before passing them to resetBtn
+                btnIcon = document.getElementById('analyst-icon');
+                btnText = document.getElementById('analyst-btn-text');
+                resetBtn(btnIcon, btnText, originalIconClass, originalText); 
+                lucide.createIcons(); // Re-initialize icons after reset
+            }
+        }
+        
+        // --- Marked.js for Markdown rendering (for AI output) ---
+        const markedScript = document.createElement('script');
+        // FIX: Changed CDN URL to unpkg.com, which is often more reliable for this environment.
+        markedScript.src = "https://unpkg.com/marked@6.0.0/lib/marked.umd.js"; 
+        
+        // CRITICAL: Use 'onload' event to ensure the library is defined before use
+        markedScript.onload = () => {
+            isMarkedLoaded = true;
+            console.log("marked.js loaded successfully.");
+
+            // Configure marked to disable deprecated options and suppress warnings
+            if (typeof marked !== 'undefined' && marked.setOptions) {
+                marked.setOptions({
+                    mangle: false,      // Disable deprecated mangle option
+                    headerIds: false,   // Disable deprecated headerIds option
+                    breaks: true,       // Convert line breaks to <br>
+                    gfm: true          // Enable GitHub Flavored Markdown
+                });
+            }
+        };
+        markedScript.onerror = () => {
+            console.error("Failed to load marked.js. AI output rendering will be plain text.");
+            // Since the library failed to load, set isMarkedLoaded to false but allow plain text rendering
+            isMarkedLoaded = false;
+        };
+        document.head.appendChild(markedScript);
+
+        // --- Event Listeners and Initial Setup ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Scroll Progress Indicator & Back to Top Button
+            const backToTopBtn = document.getElementById('back-to-top');
+
+            window.addEventListener('scroll', () => {
+                const scrollProgress = document.getElementById('scroll-progress');
+                const totalHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const progress = (window.pageYOffset / totalHeight) * 100;
+                scrollProgress.style.width = progress + '%';
+
+                // Show/hide back to top button
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.add('visible');
+                } else {
+                    backToTopBtn.classList.remove('visible');
+                }
+            });
+
+            // Back to Top Button Click
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Mobile Menu Toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('active');
+            });
+
+            // Close mobile menu when clicking a link
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                });
+            });
+
+            // Magnetic Button Setup
+            const magneticButton = document.getElementById('magnetic-cta');
+            if (magneticButton) {
+                const strength = 15;
+                magneticButton.addEventListener('mousemove', (e) => {
+                    const rect = magneticButton.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
+                    const deltaX = e.clientX - centerX;
+                    const deltaY = e.clientY - centerY;
+                    const translateX = (deltaX / rect.width) * strength * 2;
+                    const translateY = (deltaY / rect.height) * strength * 2;
+                    magneticButton.style.transform = `translate3d(${translateX}px, ${translateY}px, 0)`;
+                });
+                magneticButton.addEventListener('mouseleave', () => {
+                    magneticButton.style.transform = `translate3d(0, 0, 0)`;
+                });
+            }
+
+            // AI Engine Event Handlers
+            document.getElementById('generate-summary-btn').addEventListener('click', () => {
+                const projectId = document.getElementById('project-selector').value;
+                if (projectId) {
+                    generateProjectSummary(projectId);
+                } else {
+                    document.getElementById('ai-output-content').textContent = "Please select a project before running the analysis.";
+                    document.getElementById('ai-output-panel').classList.remove('hidden');
+                }
+            });
+
+            document.getElementById('analyze-market-btn').addEventListener('click', analyzeMarket);
+
+            // Other Setup (Typing and Scroll Animations)
+            const textToType = "I turn complex business problems into intelligent AI solutions that save time, reduce costs, and delight users.";
+            const typingElement = document.getElementById('typing-text');
+            const cursorElement = document.getElementById('cursor');
+            let i = 0;
+
+            function typeWriter() {
+                if (i < textToType.length) {
+                    typingElement.innerHTML += textToType.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 35);
+                } else {
+                    cursorElement.style.animation = 'none';
+                    cursorElement.style.opacity = '1';
+                    setTimeout(() => cursorElement.style.opacity = '0', 2000);
+                }
+            }
+            setTimeout(typeWriter, 2000); 
+
+            const elementsToAnimate = document.querySelectorAll('.anim-hidden, h2.anim-hidden, .animated-divider');
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = entry.target;
+                        const delay = parseInt(target.getAttribute('data-delay') || '0');
+                        if (target.classList.contains('animated-divider')) {
+                            setTimeout(() => target.classList.add('active'), delay);
+                        } else {
+                            setTimeout(() => target.classList.add('anim-visible'), delay);
+                        }
+                        observer.unobserve(target);
+                    }
+                });
+            }, {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.2
+            });
+            elementsToAnimate.forEach(el => {
+                observer.observe(el);
+            });
+
+            lucide.createIcons();
+        });
+    </script>
+
+</body>
+</html>
